@@ -1,5 +1,3 @@
-using System;
-
 namespace StringArrayList
 {
   public class StringArrayList : IStringList
@@ -13,34 +11,22 @@ namespace StringArrayList
         public StringArrayList()
         {
             this._list = new string[] {};
+            this.OccupiedIndex = -1;
         }
 
         public void Add(string newItem) {
-            Console.WriteLine($"Length = {_list.Length}");
+            this.OccupiedIndex++;
+            // Console.WriteLine($"Length = {_list.Length}");
             if (_list.Length == 0) {
-                string[] newList = new string[] {newItem};
-                this.OccupiedIndex = 0;
-                this._list = newList;
-                return;
+                this._list = new string[1];
             }
-            if (this._list[this._list.Length - 1] is null)
-            {
-                string[] newList = new string[this._list.Length * 2];
-                for (int i = 0; i < this._list.Length; i++)
-                {
-                    newList[i] = this._list[i];
-                }
-                this._list = newList;
-                this._list[OccupiedIndex] = newItem;
-                this.OccupiedIndex++;
-            } else {
-                this._list[OccupiedIndex] = newItem;
-                this.OccupiedIndex++;
-            }
+            DobleSizeIfNeeded();
+            this._list[OccupiedIndex] = newItem;
         }
 
         public void Remove() {
-            this.RemoveAt(this.OccupiedIndex - 1);
+            this._list[this.OccupiedIndex] = null;
+            this.OccupiedIndex--;
             return;
         }
 
@@ -52,16 +38,44 @@ namespace StringArrayList
             _list[index] = aString;
             return;
         }
-        public void AddAt(int index, string aString) {
-            _list[index] = aString;
+        public void AddAt(int indexToInsert, string aString) {
+            if(indexToInsert > this.OccupiedIndex || indexToInsert < 0)
+            {
+                throw new System.IndexOutOfRangeException("Bad Index");
+            }
+
+            DobleSizeIfNeeded();
+
+            // make space for the new item
+            for (int i = indexToInsert; i <= this.OccupiedIndex; i++)
+            {
+                this._list[i + 1] = this._list[i];
+            }
+
+            this.OccupiedIndex++;
+            _list[indexToInsert] = aString;
             return;
         }
         public void RemoveAt(int indexToRemove) {
-            for (int i = indexToRemove; i < this.Length; i++)
+            for (int i = indexToRemove; i <= this.OccupiedIndex; i++)
             {
                 this._list[i] = this._list[i + 1];
             }
+            this.OccupiedIndex--;
             return;
+        }
+
+        private void DobleSizeIfNeeded()
+        {
+            if (this._list[this._list.Length - 1] is not null)
+            {
+                string[] newList = new string[this._list.Length * 2];
+                for (int i = 0; i < this._list.Length; i++)
+                {
+                    newList[i] = this._list[i];
+                }
+                this._list = newList;
+            }
         }
     }
 }

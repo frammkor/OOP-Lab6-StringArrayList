@@ -1,3 +1,4 @@
+using System;
 using NUnit.Framework;
 
 namespace StringArrayList.Test
@@ -15,20 +16,54 @@ namespace StringArrayList.Test
         public void Test()
         {
             // test Length
-            Assert.AreEqual(this._stringArray.Length, 0);
-            // test add first item
-            this._stringArray.Add("test1");
-            Assert.AreEqual(this._stringArray.Length, 1);
-            Assert.AreEqual(this._stringArray.GetAt(0), "test1");
+            Assert.AreEqual(0, this._stringArray.Length);
+            // test Add()
+            this._stringArray.Add("test0");
+            Assert.AreEqual(1, this._stringArray.Length);
+            // test GetAt()
+            Assert.AreEqual(this._stringArray.GetAt(0), "test0");
             // test adding more items
+            this._stringArray.Add("test1");
+            Assert.AreEqual(this._stringArray.GetAt(1), "test1");
+            Assert.AreEqual(2, this._stringArray.Length);
             this._stringArray.Add("test2");
-            Assert.AreEqual(this._stringArray.GetAt(2), "test2");
             this._stringArray.Add("test3");
+            Assert.AreEqual(4, this._stringArray.Length);
             this._stringArray.Add("test4");
-            this._stringArray.Add("test5");
+            // test OccupiedIndex
             Assert.AreEqual(4, this._stringArray.OccupiedIndex);
-            Assert.AreEqual("test5", this._stringArray.GetAt(this._stringArray.OccupiedIndex));
+            Assert.AreEqual("test4", this._stringArray.GetAt(this._stringArray.OccupiedIndex));
+            Assert.AreEqual(8, this._stringArray.Length);
 
+            // test Remove()
+            this._stringArray.Remove();
+            Assert.AreEqual(3, this._stringArray.OccupiedIndex);
+            Assert.AreEqual("test3", this._stringArray.GetAt(this._stringArray.OccupiedIndex));
+
+            // teste RemoveAt()
+            this._stringArray.RemoveAt(0);
+            Assert.AreEqual("test1", this._stringArray.GetAt(0));
+            Assert.AreEqual(2, this._stringArray.OccupiedIndex);
+            Assert.AreEqual("test3", this._stringArray.GetAt(this._stringArray.OccupiedIndex));
+
+            // test SetAt()
+            this._stringArray.SetAt(1, "setAt1");
+            Assert.AreEqual("setAt1", this._stringArray.GetAt(1));
+
+            // test AddAt()
+            this._stringArray.SetAt(0, "test0");
+            Assert.AreEqual(this._stringArray.GetAt(0), "test0");
+            Assert.AreEqual(2, this._stringArray.OccupiedIndex);
+
+            // test AddAt() 2
+            this._stringArray.SetAt(2, "setAt2");
+            Assert.AreEqual(this._stringArray.GetAt(2), "setAt2");
+            Assert.AreEqual(2, this._stringArray.OccupiedIndex);
+
+            // AddAt() bad argument and concistency
+            Assert.Throws<IndexOutOfRangeException>(() => this._stringArray.SetAt(-1, "setAt2"));
+            Assert.AreEqual(this._stringArray.GetAt(2), "setAt2");
+            Assert.AreEqual(2, this._stringArray.OccupiedIndex);
         }
     }
 }
