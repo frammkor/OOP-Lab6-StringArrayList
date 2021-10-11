@@ -1,3 +1,10 @@
+/* 
+Franco Cespi
+CS-1415 Lab 6: StringArrayList
+Started: 10/11/2021
+Implementation of a StringList
+*/
+
 namespace StringArrayList
 {
   public class StringArrayList : IStringList
@@ -14,6 +21,10 @@ namespace StringArrayList
             this.OccupiedIndex = -1;
         }
 
+        /*
+            Add a new item to the array
+            Handles empty array case and full array case
+        */
         public void Add(string newItem) {
             this.OccupiedIndex++;
             // Console.WriteLine($"Length = {_list.Length}");
@@ -24,16 +35,28 @@ namespace StringArrayList
             this._list[OccupiedIndex] = newItem;
         }
 
+
+        /*
+            Removes the item at the end of the list
+        */
         public void Remove() {
             this._list[this.OccupiedIndex] = null;
             this.OccupiedIndex--;
             return;
         }
 
+
+        /*
+            Get an item by index
+        */
         public string GetAt(int index) {
             return _list[index];
         }
 
+
+        /*
+            Set a value on a specific index
+        */
         public void SetAt(int index, string aString) {
             _list[index] = aString;
             return;
@@ -56,6 +79,10 @@ namespace StringArrayList
             _list[indexToInsert] = aString;
             return;
         }
+
+        /*
+            Removes the item a specific index
+        */
         public void RemoveAt(int indexToRemove) {
             for (int i = indexToRemove; i <= this.OccupiedIndex; i++)
             {
@@ -65,6 +92,9 @@ namespace StringArrayList
             return;
         }
 
+        /*
+            Creates bigger arrays when needed (empty array or full array)
+        */
         private void DobleSizeIfNeeded()
         {
             if (this._list[this._list.Length - 1] is not null)
